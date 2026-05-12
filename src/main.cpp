@@ -9,7 +9,7 @@
 const char* WIFI_SSID = "NITDA-ICT-HUB";
 const char* WIFI_PASS = "6666.2524#";
 const char* TB_SERVER = "demo.thingsboard.io"; 
-const char* TB_TOKEN = "YOUR_DEVICE_TOKEN";    
+const char* TB_TOKEN = "a9H2tWfiKLMbxwVZ1aFE";    
 
 // ---------------------------------------------------------
 // [FEATURE 3: Dynamic Cloud Configuration] 
