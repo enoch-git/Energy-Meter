@@ -21,7 +21,7 @@ The **AMI-V0.1** (Advanced Metering Infrastructure) engineered by **Lytenergy Sy
 ## 📸 Hardware Architecture & Prototype
 
 <p align="center">
-  <img src="/test/SM/AMI1.jpg" alt="AMI-V0.1 Custom PCB and SCT-013 Current Transformer" width="600">
+  <img src="/test/SM/AMI2.jpg" alt="AMI-V0.1 Custom PCB and SCT-013 Current Transformer" width="600">
   <br>
   <em>Figure 1: The AMI-V0.1 hardware featuring the ESP32-C3 SuperMini, onboard 230V AC-to-5V DC HLK-PM01 power module, dual 3.5mm jack inputs, and custom 3D-printed enclosure with an SCT-013 split-core current transformer.</em>
 </p>
@@ -56,6 +56,9 @@ The AMI-V0.1 is designed around accessible, commercial off-the-shelf (COTS) comp
 
 The firmware is developed in **C++** utilizing the **PlatformIO** ecosystem. To achieve high-precision signal processing on a single-core processor without radio interference, the system architecture relies on deterministic task time-slicing:
 
+<p align="center">
+  <img src="/test/SM/AMI1.jpg" alt="AMI-V0.1 Custom PCB and SCT-013 Current Transformer" width="600">
+  <br>
 ```text
 +-----------------------------------------------------------------+
 |                       FreeRTOS Scheduler                        |
