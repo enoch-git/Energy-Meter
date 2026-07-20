@@ -1,47 +1,71 @@
-# Energy-Meter (AMI-V0.1)
-# AMI-V0.1: Dual-Channel Smart Energy Meter
-**An open-architecture edge-computing node for real-time power profiling and cost tracking.**
+# AMI-V0.1: Edge-Computing Smart Energy Node
+**An open-architecture, dual-channel IoT metering node engineered for real-time power profiling, dynamic tariff tracking, and non-residential OpEx optimization.**
 
-![Project Status](https://img.shields.io/badge/Status-Active_Development-brightgreen)
-![Platform](https://img.shields.io/badge/Platform-ESP32--C3-blue)
-![RTOS](https://img.shields.io/badge/OS-FreeRTOS-orange)
-![Cloud](https://img.shields.io/badge/Cloud-ThingsBoard-blueviolet)
-
-## Overview
-In dynamic energy environments where facilities constantly switch between the main grid, solar inverters, and backup generators, standard utility meters fail to provide actionable insights. 
-
-**AMI-V0.1** (Advanced Metering Infrastructure) by Lytenergy Systems is a localized IoT monitoring node designed to solve this. Built on the ESP32-C3 RISC-V architecture, this device physically clips onto multiple power feeds to act as an intelligent, high-speed watchdog. It calculates true energy consumption, tracks tariff burn rates in real-time, and provides cloud-based telemetry without dropping data during internet outages.
-
-##  Key Features
-* **Dual-Source Power Profiling:** Intelligently compares two isolated current channels (e.g., Grid vs. Local Inverter) to determine the active power source and log exact generator running hours.
-* **Edge-Computed DSP:** Utilizes an Exponential Moving Average (EMA) filter to clean noisy ADC signals at 2kHz, ensuring completely stable, commercial-grade telemetry.
-* **Real-Time Financial Tracking:** Translates raw Watt-hours into actual monetary spend using dynamic cloud-synced tariff rates, preventing bill shock.
-* **Overload Watchdog:** A preemptive FreeRTOS alarm task that detects load spikes and pushes instantaneous MQTT alerts before physical hardware (like battery banks or inverters) trips.
-* **Over-The-Air (OTA) Configuration:** Calibration factors, assumed voltages, and tariff rates can be updated instantly from the cloud dashboard without re-flashing the firmware.
-
-##  Hardware Stack
-* **Microcontroller:** ESP32-C3 SuperMini (Single-Core, 160MHz)
-* **Current Sensors:** 2x SCT-013 (100A/50mA) Split-Core Transformers
-* **Power Supply:** Onboard Hi-Link HLK-PM01 (230V AC to 5V DC)
-* **Analog Front End:** Custom 1.65V DC-biased voltage divider network
-
-##  Software Architecture
-The firmware is built in **C++** using **PlatformIO** and heavily relies on **FreeRTOS** for deterministic task scheduling. 
-* `Core 0 (High Priority)`: Dedicated to non-blocking ADC sampling, RMS math, and DSP filtering to ensure accurate waveform capture.
-* `Core 0 (Low Priority)`: Handles WiFi persistence, ThingsBoard MQTT JSON serialization, and listening for remote RPC commands.
-
-##  Getting Started
-
-### Prerequisites
-* [Visual Studio Code](https://code.visualstudio.com/) with the [PlatformIO Extension](https://platformio.org/)
-* A free [ThingsBoard](https://demo.thingsboard.io/) account.
-
-### Installation
-1. Clone this repository: `git clone https://github.com/YourOrg/AMI-V0.1.git`
-2. Open the project folder in VS Code.
-3. Open `src/main.cpp` and update your WiFi credentials and `TB_TOKEN` (ThingsBoard Access Token).
-4. Connect your ESP32-C3 via USB-C and click the **PlatformIO: Upload** arrow in the bottom status bar.
-5. The device will automatically provision itself to your ThingsBoard dashboard.
+<p align="center">
+  <img src="https://img.shields.io/badge/Status-Active_Development-00C853?style=for-the-badge" alt="Project Status">
+  <img src="https://img.shields.io/badge/Hardware-ESP32--C3_SuperMini-2962FF?style=for-the-badge" alt="Platform">
+  <img src="https://img.shields.io/badge/OS-FreeRTOS-FF6D00?style=for-the-badge" alt="RTOS">
+  <img src="https://img.shields.io/badge/Cloud-ThingsBoard_MQTT-AA00FF?style=for-the-badge" alt="Cloud">
+  <img src="https://img.shields.io/badge/License-MIT-455A64?style=for-the-badge" alt="License">
+</p>
 
 ---
-*Designed and engineered for smarter, more resilient micro-grids.*
+
+## 🌐 Executive Overview
+In infrastructure-challenged environments where commercial facilities constantly switch between the municipal grid, solar inverter banks, and localized backup generators, traditional passive utility meters fail to provide actionable operational insights. 
+
+The **AMI-V0.1** (Advanced Metering Infrastructure) engineered by **Lytenergy Systems** bridges this critical data gap. Powered by the low-power RISC-V ESP32-C3 architecture and running a deterministic FreeRTOS kernel, this edge-computing node clips non-invasively onto dual power feeds. It continuously sanitizes noisy industrial waveforms, calculates true Root Mean Square (RMS) energy metrics, and pushes highly compressed JSON telemetry to the cloud—ensuring zero data loss during network dropouts while safeguarding commercial equipment against severe inductive load spikes.
+
+---
+
+## 📸 Hardware Architecture & Prototype
+
+<p align="center">
+  <img src="/test/SM/AMI1.jpg" alt="AMI-V0.1 Custom PCB and SCT-013 Current Transformer" width="600">
+  <br>
+  <em>Figure 1: The AMI-V0.1 hardware featuring the ESP32-C3 SuperMini, onboard 230V AC-to-5V DC HLK-PM01 power module, dual 3.5mm jack inputs, and custom 3D-printed enclosure with an SCT-013 split-core current transformer.</em>
+</p>
+
+---
+
+## ⚡ Key Architectural Capabilities
+
+* **Dual-Source Autonomous Profiling:** Continuously monitors two isolated analog channels (e.g., Grid vs. Backup Generator) to autonomously identify active power sources, log precise operational running hours, and flag fuel-wasting low-load generator states.
+* **Edge-Computed Digital Signal Processing:** Bypasses cloud compute costs by executing an onboard Exponential Moving Average (EMA) filter at high sampling frequencies (2–5 kHz), eliminating industrial electromagnetic noise for commercial-grade RMS precision.
+* **Real-Time OpEx & Tariff Tracking:** Dynamically translates raw energy consumption ($\text{Wh}$) into real-time financial burn rates using cloud-synced local currency tariffs, protecting small and medium enterprises (SMEs) from bill shock.
+* **Preemptive Overload Watchdog:** Implements a dedicated FreeRTOS software watchdog that monitors for sustained inductive load surges, dispatching instantaneous MQTT alarms before fragile commercial solar inverters or circuit breakers trip.
+* **Dynamic Cloud Configuration (OTA):** All local voltage baseline assumptions, calibration multipliers, and tariff pricing tiers can be remotely modified Over-The-Air via ThingsBoard shared attributes without technician dispatches or firmware re-flashing.
+
+---
+
+## 🛠️ Hardware Specification
+
+The AMI-V0.1 is designed around accessible, commercial off-the-shelf (COTS) components integrated onto a custom layout to maintain an aggressively low Bill of Materials (BOM).
+
+| Component | Model / Specification | Function |
+| :--- | :--- | :--- |
+| **Microcontroller** | ESP32-C3 SuperMini (RISC-V) | Single-core 160MHz CPU executing FreeRTOS and MQTT serialization. |
+| **Current Sensors** | 2x SCT-013 (100A / 50mA) | Non-invasive split-core transformers for dual-channel load monitoring. |
+| **Power Power Supply** | Hi-Link HLK-PM01 Module | Step-down isolation transformer converting 230V AC mains directly to 5V DC. |
+| **Analog Front-End** | Custom Biasing Network | Precision resistor/capacitor network establishing a stable **1.65V DC bias** to safely shift alternating sine waves into the ADC range. |
+| **Input Interfaces** | Dual 3.5mm Audio Jacks | Quick-release mechanical connections for external split-core CT clamps. |
+
+---
+
+## 💻 Firmware & FreeRTOS Task Scheduling
+
+The firmware is developed in **C++** utilizing the **PlatformIO** ecosystem. To achieve high-precision signal processing on a single-core processor without radio interference, the system architecture relies on deterministic task time-slicing:
+
+```text
++-----------------------------------------------------------------+
+|                       FreeRTOS Scheduler                        |
++-----------------------------------------------------------------+
+        |                                         |
+        v [High Priority Task]                    v [Low Priority Task]
++-------------------------------+       +-------------------------+
+|      Task_SampleSensors       |       |        Task_MQTT        |
+|-------------------------------|       |-------------------------|
+| * Non-blocking ADC Reads      |       | * Wi-Fi Persistence     |
+| * EMA DSP Waveform Filtering  | <---> | * JSON Serialization    |
+| * True RMS Math & Accumulation|       | * ThingsBoard Pub/Sub   |
++-------------------------------+       +-------------------------+
